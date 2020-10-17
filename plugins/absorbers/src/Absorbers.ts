@@ -3,12 +3,12 @@ import { AbsorberInstance } from "./AbsorberInstance";
 import { Container } from "tsparticles-core/dist/Core/Container";
 import type { Particle } from "tsparticles-core/dist/Core/Particle";
 import type { IAbsorber } from "./Options/Interfaces/IAbsorber";
-import { Utils } from "tsparticles-core/dist/Utils";
 import { Absorber } from "./Options/Classes/Absorber";
 import type { SingleOrMultiple, RecursivePartial } from "tsparticles-core/dist/Types";
 import type { IOptions } from "tsparticles-core/dist/Options/Interfaces/IOptions";
 import { AbsorberClickMode } from "./Enums";
 import type { IAbsorberOptions } from "./Options/Interfaces/IAbsorberOptions";
+import { itemFromArray } from "tsparticles-core";
 
 /**
  * @category Absorbers Plugin
@@ -119,7 +119,7 @@ export class Absorbers implements IContainerPlugin {
 
             if (modeAbsorbers instanceof Array) {
                 if (modeAbsorbers.length > 0) {
-                    absorbersModeOptions = Utils.itemFromArray(modeAbsorbers);
+                    absorbersModeOptions = itemFromArray(modeAbsorbers);
                 }
             } else {
                 absorbersModeOptions = modeAbsorbers;
@@ -127,7 +127,7 @@ export class Absorbers implements IContainerPlugin {
 
             const absorbersOptions =
                 absorbersModeOptions ??
-                (absorberOptions instanceof Array ? Utils.itemFromArray(absorberOptions) : absorberOptions);
+                (absorberOptions instanceof Array ? itemFromArray(absorberOptions) : absorberOptions);
 
             const aPosition = container.interactivity.mouse.clickPosition;
             const absorber = new AbsorberInstance(this, this.container, absorbersOptions, aPosition);

@@ -1,13 +1,13 @@
 import type { Container } from "tsparticles-core/dist/Core/Container";
 import type { ICoordinates } from "tsparticles-core/dist/Core/Interfaces/ICoordinates";
 import type { IEmitter } from "./Options/Interfaces/IEmitter";
-import { Utils } from "tsparticles-core/dist/Utils";
 import { SizeMode } from "tsparticles-core/dist/Enums";
 import { EmitterSize } from "./Options/Classes/EmitterSize";
 import type { Emitters } from "./Emitters";
 import type { RecursivePartial } from "tsparticles-core/dist/Types";
 import type { IParticles } from "tsparticles-core/dist/Options/Interfaces/Particles/IParticles";
 import type { IEmitterSize } from "./Options/Interfaces/IEmitterSize";
+import { deepExtend, isPointInside } from "tsparticles-core";
 
 /**
  * @category Emitters Plugin
@@ -33,10 +33,10 @@ export class EmitterInstance {
         position?: ICoordinates
     ) {
         this.initialPosition = position;
-        this.emitterOptions = Utils.deepExtend({}, emitterOptions) as IEmitter;
+        this.emitterOptions = deepExtend({}, emitterOptions) as IEmitter;
         this.position = this.initialPosition ?? this.calcPosition();
 
-        let particlesOptions = Utils.deepExtend({}, this.emitterOptions.particles) as RecursivePartial<IParticles>;
+        let particlesOptions = deepExtend({}, this.emitterOptions.particles) as RecursivePartial<IParticles>;
 
         if (particlesOptions === undefined) {
             particlesOptions = {};
@@ -105,7 +105,7 @@ export class EmitterInstance {
         const initialPosition = this.initialPosition;
 
         this.position =
-            initialPosition && Utils.isPointInside(initialPosition, this.container.canvas.size)
+            initialPosition && isPointInside(initialPosition, this.container.canvas.size)
                 ? initialPosition
                 : this.calcPosition();
     }

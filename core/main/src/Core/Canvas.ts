@@ -5,7 +5,26 @@ import type { ICoordinates } from "./Interfaces/ICoordinates";
 import type { IParticle } from "./Interfaces/IParticle";
 import type { IContainerPlugin } from "./Interfaces/IContainerPlugin";
 import type { ILink } from "./Interfaces/ILink";
-import { CanvasUtils, ColorUtils, Constants, NumberUtils, Utils } from "../Utils";
+import {
+    canvasClass,
+    clear,
+    colorToRgb,
+    deepExtend,
+    drawConnectLine,
+    drawGrabLine,
+    drawLight,
+    drawLinkLine,
+    drawLinkTriangle,
+    drawParticle,
+    drawParticleShadow,
+    drawPlugin,
+    getDistance,
+    getLinkColor,
+    getStyleFromRgb,
+    gradient,
+    hslToRgb,
+    paintBase,
+} from "../Utils";
 import type { Particle } from "./Particle";
 import type { IDelta } from "./Interfaces/IDelta";
 
@@ -59,7 +78,7 @@ export class Canvas {
 
         if (element) {
             if (options.backgroundMode.enable) {
-                this.originalStyle = Utils.deepExtend({}, element.style) as CSSStyleDeclaration;
+                this.originalStyle = deepExtend({}, element.style) as CSSStyleDeclaration;
 
                 element.style.position = "fixed";
                 element.style.zIndex = options.backgroundMode.zIndex.toString(10);
@@ -81,7 +100,7 @@ export class Canvas {
         const color = cover.color;
         const trail = options.particles.move.trail;
 
-        const coverRgb = ColorUtils.colorToRgb(color);
+        const coverRgb = colorToRgb(color);
 
         this.coverColor =
             coverRgb !== undefined
@@ -92,7 +111,7 @@ export class Canvas {
                       a: cover.opacity,
                   }
                 : undefined;
-        this.trailFillColor = ColorUtils.colorToRgb(trail.fillColor);
+        this.trailFillColor = colorToRgb(trail.fillColor);
 
         this.initBackground();
         this.paint();
@@ -100,7 +119,7 @@ export class Canvas {
 
     public loadCanvas(canvas: HTMLCanvasElement, generatedCanvas?: boolean): void {
         if (!canvas.className) {
-            canvas.className = Constants.canvasClass;
+            canvas.className = canvasClass;
         }
 
         if (this.generatedCanvas) {
@@ -109,7 +128,7 @@ export class Canvas {
 
         this.generatedCanvas = generatedCanvas ?? this.generatedCanvas;
         this.element = canvas;
-        this.originalStyle = Utils.deepExtend({}, this.element.style) as CSSStyleDeclaration;
+        this.originalStyle = deepExtend({}, this.element.style) as CSSStyleDeclaration;
         this.size.height = canvas.offsetHeight;
         this.size.width = canvas.offsetWidth;
 
@@ -124,7 +143,7 @@ export class Canvas {
         }
 
         if (this.context) {
-            CanvasUtils.clear(this.context, this.size);
+            clear(this.context, this.size);
         }
     }
 
@@ -151,8 +170,8 @@ export class Canvas {
         }
 
         if (options.backgroundMask.enable && options.backgroundMask.cover && this.coverColor) {
-            CanvasUtils.clear(this.context, this.size);
-            this.paintBase(ColorUtils.getStyleFromRgb(this.coverColor, this.coverColor.a));
+            clear(this.context, this.size);
+            this.paintBase(getStyleFromRgb(this.coverColor, this.coverColor.a));
         } else {
             this.paintBase();
         }
@@ -168,9 +187,9 @@ export class Canvas {
         if (options.backgroundMask.enable) {
             this.paint();
         } else if (trail.enable && trail.length > 0 && this.trailFillColor) {
-            this.paintBase(ColorUtils.getStyleFromRgb(this.trailFillColor, 1 / trail.length));
+            this.paintBase(getStyleFromRgb(this.trailFillColor, 1 / trail.length));
         } else if (this.context) {
-            CanvasUtils.clear(this.context, this.size);
+            clear(this.context, this.size);
         }
     }
 
@@ -220,7 +239,7 @@ export class Canvas {
         const pos1 = p1.getPosition();
         const pos2 = p2.getPosition();
 
-        CanvasUtils.drawConnectLine(ctx, p1.linksWidth ?? this.container.retina.linksWidth, lineStyle, pos1, pos2);
+        drawConnectLine(ctx, p1.linksWidth ?? this.container.retina.linksWidth, lineStyle, pos1, pos2);
     }
 
     public drawGrabLine(particle: IParticle, lineColor: IRgb, opacity: number, mousePos: ICoordinates): void {
@@ -233,14 +252,7 @@ export class Canvas {
 
         const beginPos = particle.getPosition();
 
-        CanvasUtils.drawGrabLine(
-            ctx,
-            particle.linksWidth ?? container.retina.linksWidth,
-            beginPos,
-            mousePos,
-            lineColor,
-            opacity
-        );
+        drawGrabLine(ctx, particle.linksWidth ?? container.retina.linksWidth, beginPos, mousePos, lineColor, opacity);
     }
 
     public drawParticleShadow(particle: Particle, mousePos: ICoordinates): void {
@@ -248,7 +260,7 @@ export class Canvas {
             return;
         }
 
-        CanvasUtils.drawParticleShadow(this.container, this.context, particle, mousePos);
+        drawParticleShadow(this.container, this.context, particle, mousePos);
     }
 
     public drawLinkTriangle(p1: IParticle, link1: ILink, link2: ILink): void {
@@ -274,14 +286,14 @@ export class Canvas {
         }
 
         if (
-            NumberUtils.getDistance(pos1, pos2) > container.retina.linksDistance ||
-            NumberUtils.getDistance(pos3, pos2) > container.retina.linksDistance ||
-            NumberUtils.getDistance(pos3, pos1) > container.retina.linksDistance
+            getDistance(pos1, pos2) > container.retina.linksDistance ||
+            getDistance(pos3, pos2) > container.retina.linksDistance ||
+            getDistance(pos3, pos1) > container.retina.linksDistance
         ) {
             return;
         }
 
-        let colorTriangle = ColorUtils.colorToRgb(triangleOptions.color);
+        let colorTriangle = colorToRgb(triangleOptions.color);
 
         if (!colorTriangle) {
             const linksOptions = p1.particlesOptions.links;
@@ -290,14 +302,14 @@ export class Canvas {
                     ? container.particles.linksColors.get(linksOptions.id)
                     : container.particles.linksColor;
 
-            colorTriangle = ColorUtils.getLinkColor(p1, p2, linkColor);
+            colorTriangle = getLinkColor(p1, p2, linkColor);
         }
 
         if (!colorTriangle) {
             return;
         }
 
-        CanvasUtils.drawLinkTriangle(
+        drawLinkTriangle(
             ctx,
             pos1,
             pos2,
@@ -338,7 +350,7 @@ export class Canvas {
 
         if (twinkle.enable) {
             const twinkleFreq = twinkle.frequency;
-            const twinkleRgb = ColorUtils.colorToRgb(twinkle.color);
+            const twinkleRgb = colorToRgb(twinkle.color);
             const twinkling = Math.random() < twinkleFreq;
 
             if (twinkling && twinkleRgb !== undefined) {
@@ -354,7 +366,7 @@ export class Canvas {
                     ? container.particles.linksColors.get(linksOptions.id)
                     : container.particles.linksColor;
 
-            colorLine = ColorUtils.getLinkColor(p1, p2, linkColor);
+            colorLine = getLinkColor(p1, p2, linkColor);
         }
 
         if (!colorLine) {
@@ -364,7 +376,7 @@ export class Canvas {
         const width = p1.linksWidth ?? container.retina.linksWidth;
         const maxDistance = p1.linksDistance ?? container.retina.linksDistance;
 
-        CanvasUtils.drawLinkLine(
+        drawLinkLine(
             ctx,
             width,
             pos1,
@@ -398,7 +410,7 @@ export class Canvas {
         const pOptions = particle.particlesOptions;
         const twinkle = pOptions.twinkle.particles;
         const twinkleFreq = twinkle.frequency;
-        const twinkleRgb = ColorUtils.colorToRgb(twinkle.color);
+        const twinkleRgb = colorToRgb(twinkle.color);
         const twinkling = twinkle.enable && Math.random() < twinkleFreq;
         const radius = particle.getRadius();
         const opacity = twinkling ? twinkle.opacity : particle.bubble.opacity ?? particle.opacity.value;
@@ -406,26 +418,24 @@ export class Canvas {
         const infection = options.infection;
         const infectionStages = infection.stages;
         const infectionColor = infectionStage !== undefined ? infectionStages[infectionStage].color : undefined;
-        const infectionRgb = ColorUtils.colorToRgb(infectionColor);
+        const infectionRgb = colorToRgb(infectionColor);
         const fColor =
             twinkling && twinkleRgb !== undefined
                 ? twinkleRgb
-                : infectionRgb ?? (pfColor ? ColorUtils.hslToRgb(pfColor) : undefined);
+                : infectionRgb ?? (pfColor ? hslToRgb(pfColor) : undefined);
         const sColor =
             twinkling && twinkleRgb !== undefined
                 ? twinkleRgb
-                : infectionRgb ?? (psColor ? ColorUtils.hslToRgb(psColor) : undefined);
+                : infectionRgb ?? (psColor ? hslToRgb(psColor) : undefined);
 
-        const fillColorValue = fColor !== undefined ? ColorUtils.getStyleFromRgb(fColor, opacity) : undefined;
+        const fillColorValue = fColor !== undefined ? getStyleFromRgb(fColor, opacity) : undefined;
 
         if (!this.context || (!fillColorValue && !sColor)) {
             return;
         }
 
         const strokeColorValue =
-            sColor !== undefined
-                ? ColorUtils.getStyleFromRgb(sColor, particle.stroke.opacity ?? opacity)
-                : fillColorValue;
+            sColor !== undefined ? getStyleFromRgb(sColor, particle.stroke.opacity ?? opacity) : fillColorValue;
 
         if (particle.links.length > 0) {
             this.context.save();
@@ -469,7 +479,7 @@ export class Canvas {
         }
 
         if (radius > 0) {
-            CanvasUtils.drawParticle(
+            drawParticle(
                 this.container,
                 this.context,
                 particle,
@@ -490,7 +500,7 @@ export class Canvas {
             return;
         }
 
-        CanvasUtils.drawPlugin(this.context, plugin, delta);
+        drawPlugin(this.context, plugin, delta);
     }
 
     public drawLight(mousePos: ICoordinates): void {
@@ -498,7 +508,7 @@ export class Canvas {
             return;
         }
 
-        CanvasUtils.drawLight(this.container, this.context, mousePos);
+        drawLight(this.container, this.context, mousePos);
     }
 
     private paintBase(baseColor?: string): void {
@@ -506,7 +516,7 @@ export class Canvas {
             return;
         }
 
-        CanvasUtils.paintBase(this.context, this.size, baseColor);
+        paintBase(this.context, this.size, baseColor);
     }
 
     private lineStyle(p1: IParticle, p2: IParticle): CanvasGradient | undefined {
@@ -514,7 +524,7 @@ export class Canvas {
         const connectOptions = options.interactivity.modes.connect;
 
         if (this.context) {
-            return CanvasUtils.gradient(this.context, p1, p2, connectOptions.links.opacity);
+            return gradient(this.context, p1, p2, connectOptions.links.opacity);
         }
     }
 
@@ -530,10 +540,10 @@ export class Canvas {
         const elementStyle = element.style;
 
         if (background.color) {
-            const color = ColorUtils.colorToRgb(background.color);
+            const color = colorToRgb(background.color);
 
             if (color) {
-                elementStyle.backgroundColor = ColorUtils.getStyleFromRgb(color, background.opacity);
+                elementStyle.backgroundColor = getStyleFromRgb(color, background.opacity);
             }
         }
 

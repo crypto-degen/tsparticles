@@ -1,7 +1,19 @@
-import type { Container } from "../Core/Container";
+import type { Container } from "./Container";
 import { ClickMode, InteractivityDetect } from "../Enums";
-import type { ICoordinates } from "../Core/Interfaces/ICoordinates";
-import { Constants } from "./Constants";
+import type { ICoordinates } from "./Interfaces/ICoordinates";
+import {
+    mouseDownEvent,
+    mouseLeaveEvent,
+    mouseMoveEvent,
+    mouseOutEvent,
+    mouseUpEvent,
+    resizeEvent,
+    touchCancelEvent,
+    touchEndEvent,
+    touchMoveEvent,
+    touchStartEvent,
+    visibilityChangeEvent,
+} from "../Utils/Constants";
 
 /**
  * Particles container event listeners manager
@@ -87,13 +99,13 @@ export class EventListeners {
         const container = this.container;
         const options = container.options;
         const detectType = options.interactivity.detectsOn;
-        let mouseLeaveEvent = Constants.mouseLeaveEvent;
+        let leaveEvent = mouseLeaveEvent;
 
         /* events target element */
         if (detectType === InteractivityDetect.window) {
             container.interactivity.element = window;
 
-            mouseLeaveEvent = Constants.mouseOutEvent;
+            leaveEvent = mouseOutEvent;
         } else if (detectType === InteractivityDetect.parent && container.canvas.element) {
             container.interactivity.element = container.canvas.element.parentNode;
         } else {
@@ -108,45 +120,39 @@ export class EventListeners {
             (options.interactivity.events.onHover.enable || options.interactivity.events.onClick.enable)
         ) {
             /* el on mousemove */
-            EventListeners.manageListener(interactivityEl, Constants.mouseMoveEvent, this.mouseMoveHandler, add);
+            EventListeners.manageListener(interactivityEl, mouseMoveEvent, this.mouseMoveHandler, add);
 
             /* el on touchstart */
-            EventListeners.manageListener(interactivityEl, Constants.touchStartEvent, this.touchStartHandler, add);
+            EventListeners.manageListener(interactivityEl, touchStartEvent, this.touchStartHandler, add);
 
             /* el on touchmove */
-            EventListeners.manageListener(interactivityEl, Constants.touchMoveEvent, this.touchMoveHandler, add);
+            EventListeners.manageListener(interactivityEl, touchMoveEvent, this.touchMoveHandler, add);
 
             if (!options.interactivity.events.onClick.enable) {
                 /* el on touchend */
-                EventListeners.manageListener(interactivityEl, Constants.touchEndEvent, this.touchEndHandler, add);
+                EventListeners.manageListener(interactivityEl, touchEndEvent, this.touchEndHandler, add);
             }
 
             /* el on onmouseleave */
-            EventListeners.manageListener(interactivityEl, mouseLeaveEvent, this.mouseLeaveHandler, add);
+            EventListeners.manageListener(interactivityEl, leaveEvent, this.mouseLeaveHandler, add);
 
             /* el on touchcancel */
-            EventListeners.manageListener(interactivityEl, Constants.touchCancelEvent, this.touchCancelHandler, add);
+            EventListeners.manageListener(interactivityEl, touchCancelEvent, this.touchCancelHandler, add);
         }
 
         /* on click event */
         if (options.interactivity.events.onClick.enable && interactivityEl) {
-            EventListeners.manageListener(interactivityEl, Constants.touchEndEvent, this.touchEndClickHandler, add);
-            EventListeners.manageListener(interactivityEl, Constants.mouseUpEvent, this.mouseUpHandler, add);
-            EventListeners.manageListener(interactivityEl, Constants.mouseDownEvent, this.mouseDownHandler, add);
+            EventListeners.manageListener(interactivityEl, touchEndEvent, this.touchEndClickHandler, add);
+            EventListeners.manageListener(interactivityEl, mouseUpEvent, this.mouseUpHandler, add);
+            EventListeners.manageListener(interactivityEl, mouseDownEvent, this.mouseDownHandler, add);
         }
 
         if (options.interactivity.events.resize) {
-            EventListeners.manageListener(window, Constants.resizeEvent, this.resizeHandler, add);
+            EventListeners.manageListener(window, resizeEvent, this.resizeHandler, add);
         }
 
         if (document) {
-            EventListeners.manageListener(
-                document,
-                Constants.visibilityChangeEvent,
-                this.visibilityChangeHandler,
-                add,
-                false
-            );
+            EventListeners.manageListener(document, visibilityChangeEvent, this.visibilityChangeHandler, add, false);
         }
     }
 
@@ -269,7 +275,7 @@ export class EventListeners {
         }
 
         container.interactivity.mouse.position = pos;
-        container.interactivity.status = Constants.mouseMoveEvent;
+        container.interactivity.status = mouseMoveEvent;
     }
 
     /**
@@ -288,7 +294,7 @@ export class EventListeners {
         delete mouse.clickPosition;
         delete mouse.downPosition;
 
-        interactivity.status = Constants.mouseLeaveEvent;
+        interactivity.status = mouseLeaveEvent;
         mouse.inside = false;
         mouse.clicking = false;
     }

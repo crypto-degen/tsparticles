@@ -1,13 +1,13 @@
 import type { IPlugin } from "tsparticles-core/dist/Core/Interfaces/IPlugin";
 import type { Container } from "tsparticles-core";
 import { Absorbers } from "./Absorbers";
-import { Utils } from "tsparticles-core/dist/Utils";
 import type { RecursivePartial } from "tsparticles-core/dist/Types";
 import { AbsorberClickMode } from "./Enums";
 import type { IAbsorberOptions } from "./Options/Interfaces/IAbsorberOptions";
 import type { IOptions } from "tsparticles-core/dist/Options/Interfaces/IOptions";
 import { Options } from "tsparticles-core/dist/Options/Classes/Options";
 import { Absorber } from "./Options/Classes/Absorber";
+import { isInArray } from "tsparticles-core";
 
 /**
  * @category Absorbers Plugin
@@ -39,7 +39,7 @@ class AbsorbersPlugin implements IPlugin {
             loadAbsorbers = true;
         } else if (
             options.interactivity?.events?.onClick?.mode &&
-            Utils.isInArray(AbsorberClickMode.absorber, options.interactivity.events.onClick.mode)
+            isInArray(AbsorberClickMode.absorber, options.interactivity.events.onClick.mode)
         ) {
             loadAbsorbers = true;
         }

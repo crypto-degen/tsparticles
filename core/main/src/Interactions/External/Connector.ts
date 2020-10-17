@@ -1,5 +1,5 @@
 import type { Container } from "../../Core/Container";
-import { Utils } from "../../Utils";
+import { isInArray } from "../../Utils";
 import { HoverMode } from "../../Enums/Modes";
 import type { IExternalInteractor } from "../../Core/Interfaces/IExternalInteractor";
 
@@ -21,7 +21,7 @@ export class Connector implements IExternalInteractor {
 
         const hoverMode = events.onHover.mode;
 
-        return Utils.isInArray(HoverMode.connect, hoverMode);
+        return isInArray(HoverMode.connect, hoverMode);
     }
 
     public reset(): void {

@@ -1,8 +1,9 @@
 import type { Container } from "../../Core/Container";
 import { ClickMode, HoverMode } from "../../Enums";
-import { Circle, Constants, Range, Utils, NumberUtils } from "../../Utils";
+import { clamp, getDistances, isInArray, mouseMoveEvent } from "../../Utils";
 import type { ICoordinates } from "../../Core/Interfaces/ICoordinates";
 import type { IExternalInteractor } from "../../Core/Interfaces/IExternalInteractor";
+import { Circle, Range } from "../../Core/QuadTree";
 
 /**
  * Particle attract manager
@@ -25,7 +26,7 @@ export class Attractor implements IExternalInteractor {
         const hoverMode = events.onHover.mode;
         const clickMode = events.onClick.mode;
 
-        return Utils.isInArray(HoverMode.attract, hoverMode) || Utils.isInArray(ClickMode.attract, clickMode);
+        return isInArray(HoverMode.attract, hoverMode) || isInArray(ClickMode.attract, clickMode);
     }
 
     public reset(): void {
@@ -35,16 +36,16 @@ export class Attractor implements IExternalInteractor {
     public interact(): void {
         const container = this.container;
         const options = container.options;
-        const mouseMoveStatus = container.interactivity.status === Constants.mouseMoveEvent;
+        const mouseMoveStatus = container.interactivity.status === mouseMoveEvent;
         const events = options.interactivity.events;
         const hoverEnabled = events.onHover.enable;
         const hoverMode = events.onHover.mode;
         const clickEnabled = events.onClick.enable;
         const clickMode = events.onClick.mode;
 
-        if (mouseMoveStatus && hoverEnabled && Utils.isInArray(HoverMode.attract, hoverMode)) {
+        if (mouseMoveStatus && hoverEnabled && isInArray(HoverMode.attract, hoverMode)) {
             this.hoverAttract();
-        } else if (clickEnabled && Utils.isInArray(ClickMode.attract, clickMode)) {
+        } else if (clickEnabled && isInArray(ClickMode.attract, clickMode)) {
             this.clickAttract();
         }
     }
@@ -67,14 +68,14 @@ export class Attractor implements IExternalInteractor {
         const query = container.particles.quadTree.query(area);
 
         for (const particle of query) {
-            const { dx, dy, distance } = NumberUtils.getDistances(particle.position, position);
+            const { dx, dy, distance } = getDistances(particle.position, position);
             const normVec = {
                 x: dx / distance,
                 y: dy / distance,
             };
 
             const velocity = container.options.interactivity.modes.attract.speed;
-            const attractFactor = NumberUtils.clamp((1 - Math.pow(distance / attractRadius, 2)) * velocity, 0, 50);
+            const attractFactor = clamp((1 - Math.pow(distance / attractRadius, 2)) * velocity, 0, 50);
 
             particle.position.x = particle.position.x - normVec.x * attractFactor;
             particle.position.y = particle.position.y - normVec.y * attractFactor;

@@ -1,12 +1,12 @@
-import type { IContainerPlugin } from "../Core/Interfaces/IContainerPlugin";
-import type { IPlugin } from "../Core/Interfaces/IPlugin";
-import type { Container } from "../Core/Container";
+import type { IContainerPlugin } from "./Interfaces/IContainerPlugin";
+import type { IPlugin } from "./Interfaces/IPlugin";
+import type { Container } from "./Container";
 import type { RecursivePartial } from "../Types";
 import type { IOptions } from "../Options/Interfaces/IOptions";
-import type { IShapeDrawer } from "../Core/Interfaces/IShapeDrawer";
+import type { IShapeDrawer } from "./Interfaces/IShapeDrawer";
 import type { Options } from "../Options/Classes/Options";
-import { IExternalInteractor } from "../Core/Interfaces/IExternalInteractor";
-import { IParticlesInteractor } from "../Core/Interfaces/IParticlesInteractor";
+import { IExternalInteractor } from "./Interfaces/IExternalInteractor";
+import { IParticlesInteractor } from "./Interfaces/IParticlesInteractor";
 
 /**
  * @category Utils

@@ -3,7 +3,8 @@ import type { ICoordinates } from "./Interfaces/ICoordinates";
 import type { IMouseData } from "./Interfaces/IMouseData";
 import type { IRgb } from "./Interfaces/Colors";
 import { Particle } from "./Particle";
-import { Point, QuadTree, Rectangle, Utils } from "../Utils";
+import { itemFromArray } from "../Utils";
+import { QuadTree, Rectangle, Point } from "./QuadTree";
 import type { RecursivePartial } from "../Types";
 import type { IParticles } from "../Options/Interfaces/Particles/IParticles";
 import { InteractionManager } from "./Particle/InteractionManager";
@@ -100,7 +101,7 @@ export class Particles {
         if (options.infection.enable) {
             for (let i = 0; i < options.infection.infections; i++) {
                 const notInfected = this.array.filter((p) => p.infecter.infectionStage === undefined);
-                const infected = Utils.itemFromArray(notInfected);
+                const infected = itemFromArray(notInfected);
 
                 infected.infecter.startInfection(0);
             }

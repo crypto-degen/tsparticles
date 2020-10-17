@@ -2,7 +2,6 @@ import { Container } from "tsparticles-core/dist/Core/Container";
 import type { ICoordinates } from "tsparticles-core/dist/Core/Interfaces/ICoordinates";
 import { InlineArrangement, Type } from "./Enums";
 import { Particle } from "tsparticles-core/dist/Core/Particle";
-import { ColorUtils, Constants, NumberUtils, Utils } from "tsparticles-core/dist/Utils";
 import type { IDimension } from "tsparticles-core/dist/Core/Interfaces/IDimension";
 import type { ISvgPath } from "./Interfaces/ISvgPath";
 import type { IContainerPlugin } from "tsparticles-core/dist/Core/Interfaces/IContainerPlugin";
@@ -11,6 +10,15 @@ import type { IOptions } from "tsparticles-core/dist/Options/Interfaces/IOptions
 import type { RecursivePartial } from "tsparticles-core/dist/Types";
 import type { IPolygonMask } from "./Options/Interfaces/IPolygonMask";
 import { PolygonMask } from "./Options/Classes/PolygonMask";
+import {
+    colorToRgb,
+    deepExtend,
+    getDistance,
+    getStyleFromRgb,
+    itemFromArray,
+    noPolygonDataLoaded,
+    noPolygonFound,
+} from "tsparticles-core";
 
 type SvgAbsoluteCoordinatesTypes =
     | SVGPathSegArcAbs
@@ -69,7 +77,7 @@ export class PolygonMaskInstance implements IContainerPlugin {
         rawData: ICoordinates[],
         stroke: IDrawStroke
     ): void {
-        const color = ColorUtils.colorToRgb(stroke.color);
+        const color = colorToRgb(stroke.color);
 
         if (!color) {
             return;
@@ -83,7 +91,7 @@ export class PolygonMaskInstance implements IContainerPlugin {
         }
 
         context.closePath();
-        context.strokeStyle = ColorUtils.getStyleFromRgb(color);
+        context.strokeStyle = getStyleFromRgb(color);
         context.lineWidth = stroke.width;
         context.stroke();
     }
@@ -96,13 +104,13 @@ export class PolygonMaskInstance implements IContainerPlugin {
     ): void {
         context.translate(position.x, position.y);
 
-        const color = ColorUtils.colorToRgb(stroke.color);
+        const color = colorToRgb(stroke.color);
 
         if (!color) {
             return;
         }
 
-        context.strokeStyle = ColorUtils.getStyleFromRgb(color, stroke.opacity);
+        context.strokeStyle = getStyleFromRgb(color, stroke.opacity);
         context.lineWidth = stroke.width;
         context.stroke(path);
     }
@@ -247,7 +255,7 @@ export class PolygonMaskInstance implements IContainerPlugin {
             return;
         }
 
-        return Utils.deepExtend({}, position ? position : this.randomPoint()) as ICoordinates;
+        return deepExtend({}, position ? position : this.randomPoint()) as ICoordinates;
     }
 
     public particleBounce(particle: Particle): boolean {
@@ -261,7 +269,7 @@ export class PolygonMaskInstance implements IContainerPlugin {
                 return true;
             }
         } else if (options.enable && options.type === Type.inline && particle.initialPosition) {
-            const dist = NumberUtils.getDistance(particle.initialPosition, particle.getPosition());
+            const dist = getDistance(particle.initialPosition, particle.getPosition());
 
             if (dist > this.polygonMaskMoveRadius) {
                 PolygonMaskInstance.polygonBounce(particle);
@@ -326,7 +334,7 @@ export class PolygonMaskInstance implements IContainerPlugin {
         // ray-casting algorithm based on
         // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
         if (!this.raw) {
-            throw new Error(Constants.noPolygonFound);
+            throw new Error(noPolygonFound);
         }
 
         const canvasSize = container.canvas.size;
@@ -483,10 +491,10 @@ export class PolygonMaskInstance implements IContainerPlugin {
 
     private getRandomPoint(): ICoordinates {
         if (!this.raw || !this.raw.length) {
-            throw new Error(Constants.noPolygonDataLoaded);
+            throw new Error(noPolygonDataLoaded);
         }
 
-        const coords = Utils.itemFromArray(this.raw);
+        const coords = itemFromArray(this.raw);
 
         return {
             x: coords.x,
@@ -498,10 +506,10 @@ export class PolygonMaskInstance implements IContainerPlugin {
         const options = this.options;
 
         if (!this.raw || !this.raw.length || !this.paths?.length) {
-            throw new Error(Constants.noPolygonDataLoaded);
+            throw new Error(noPolygonDataLoaded);
         }
 
-        const path = Utils.itemFromArray(this.paths);
+        const path = itemFromArray(this.paths);
         const distance = Math.floor(Math.random() * path.length) + 1;
         const point = path.element.getPointAtLength(distance);
 
@@ -515,7 +523,7 @@ export class PolygonMaskInstance implements IContainerPlugin {
         const options = this.container.options;
         const polygonMaskOptions = this.options;
 
-        if (!this.raw || !this.raw.length || !this.paths?.length) throw new Error(Constants.noPolygonDataLoaded);
+        if (!this.raw || !this.raw.length || !this.paths?.length) throw new Error(noPolygonDataLoaded);
 
         let offset = 0;
         let point: DOMPoint | undefined;
@@ -543,7 +551,7 @@ export class PolygonMaskInstance implements IContainerPlugin {
 
     private getPointByIndex(index: number): ICoordinates {
         if (!this.raw || !this.raw.length) {
-            throw new Error(Constants.noPolygonDataLoaded);
+            throw new Error(noPolygonDataLoaded);
         }
 
         const coords = this.raw[index % this.raw.length];

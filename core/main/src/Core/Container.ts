@@ -14,12 +14,14 @@ import type { RecursivePartial } from "../Types";
 import { Options } from "../Options/Classes/Options";
 import type { IContainerPlugin } from "./Interfaces/IContainerPlugin";
 import type { IShapeDrawer } from "./Interfaces/IShapeDrawer";
-import { EventListeners, Plugins, Utils } from "../Utils";
+import { animate, cancelAnimation } from "../Utils";
 import { Particle } from "./Particle";
 import type { INoiseValue } from "./Interfaces/INoiseValue";
 import type { INoise } from "./Interfaces/INoise";
 import type { IRgb } from "./Interfaces/Colors";
 import type { IAttract } from "./Interfaces/IAttract";
+import { Plugins } from "./Plugins";
+import { EventListeners } from "./EventListeners";
 
 /**
  * The object loaded into an HTML element, it'll contain options loaded and all data to let everything working
@@ -196,7 +198,7 @@ export class Container {
      */
     public pause(): void {
         if (this.drawAnimationFrame !== undefined) {
-            Utils.cancelAnimation(this.drawAnimationFrame);
+            cancelAnimation()(this.drawAnimationFrame);
 
             delete this.drawAnimationFrame;
         }
@@ -220,7 +222,7 @@ export class Container {
      * Draws a frame
      */
     public draw(): void {
-        this.drawAnimationFrame = Utils.animate((timestamp) => this.drawer.nextFrame(timestamp));
+        this.drawAnimationFrame = animate()((timestamp) => this.drawer.nextFrame(timestamp));
     }
 
     /**

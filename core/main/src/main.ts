@@ -1,4 +1,4 @@
-import { Plugins } from "./Utils";
+import { Plugins } from "./Core/Plugins";
 import type { IOptions } from "./Options/Interfaces/IOptions";
 import type { Container } from "./Core/Container";
 import { Loader } from "./Core/Loader";

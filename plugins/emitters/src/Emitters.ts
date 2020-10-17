@@ -2,12 +2,12 @@ import type { IContainerPlugin } from "tsparticles-core/dist/Core/Interfaces/ICo
 import { EmitterInstance } from "./EmitterInstance";
 import type { Container } from "tsparticles-core/dist/Core/Container";
 import type { IEmitter } from "./Options/Interfaces/IEmitter";
-import { Utils } from "tsparticles-core/dist/Utils";
 import type { RecursivePartial, SingleOrMultiple } from "tsparticles-core/dist/Types";
 import { Emitter } from "./Options/Classes/Emitter";
 import type { IOptions } from "tsparticles-core/dist/Options/Interfaces/IOptions";
 import { EmitterClickMode } from "./Enums";
 import type { IEmitterOptions } from "./Options/Interfaces/IEmitterOptions";
+import { deepExtend, itemFromArray } from "tsparticles-core";
 
 /**
  * @category Emitters Plugin
@@ -106,7 +106,7 @@ export class Emitters implements IContainerPlugin {
 
             if (modeEmitters instanceof Array) {
                 if (modeEmitters.length > 0) {
-                    emitterModeOptions = Utils.itemFromArray(modeEmitters);
+                    emitterModeOptions = itemFromArray(modeEmitters);
                 }
             } else {
                 emitterModeOptions = modeEmitters;
@@ -114,12 +114,12 @@ export class Emitters implements IContainerPlugin {
 
             const emittersOptions =
                 emitterModeOptions ??
-                (emitterOptions instanceof Array ? Utils.itemFromArray(emitterOptions) : emitterOptions);
+                (emitterOptions instanceof Array ? itemFromArray(emitterOptions) : emitterOptions);
             const ePosition = container.interactivity.mouse.clickPosition;
             const emitter = new EmitterInstance(
                 this,
                 this.container,
-                Utils.deepExtend({}, emittersOptions) as IEmitter,
+                deepExtend({}, emittersOptions) as IEmitter,
                 ePosition
             );
 

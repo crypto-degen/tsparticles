@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { Linker } from "../src/Interactions/Particles/Linker";
 import { TestContainer } from "./Fixture/TestContainer";
 import { TestParticles } from "./Fixture/TestParticles";
-import { Point, QuadTree, Rectangle } from "../src/Utils";
+import { Point, QuadTree, Rectangle } from "../src/Core/QuadTree";
 import { TestCanvas } from "./Fixture/TestCanvas";
 
 describe("Linker in Canvas (200, 200) tests", () => {

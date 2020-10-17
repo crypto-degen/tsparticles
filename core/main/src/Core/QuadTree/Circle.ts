@@ -1,5 +1,5 @@
 import { Range } from "./Range";
-import type { ICoordinates } from "../Core/Interfaces/ICoordinates";
+import type { ICoordinates } from "../Interfaces/ICoordinates";
 import { Rectangle } from "./Rectangle";
 
 /**

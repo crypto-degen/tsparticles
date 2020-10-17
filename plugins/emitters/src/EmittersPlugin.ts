@@ -1,6 +1,5 @@
 import type { IPlugin } from "tsparticles-core/dist/Core/Interfaces/IPlugin";
 import type { Container } from "tsparticles-core/dist/Core/Container";
-import { Utils } from "tsparticles-core/dist/Utils";
 import { Emitters } from "./Emitters";
 import type { RecursivePartial } from "tsparticles-core/dist/Types";
 import type { IOptions } from "tsparticles-core/dist/Options/Interfaces/IOptions";
@@ -8,6 +7,7 @@ import type { IEmitterOptions } from "./Options/Interfaces/IEmitterOptions";
 import { EmitterClickMode } from "./Enums";
 import { Options } from "tsparticles-core/dist/Options/Classes/Options";
 import { Emitter } from "./Options/Classes/Emitter";
+import { isInArray } from "tsparticles-core";
 
 /**
  * @category Emitters Plugin
@@ -39,7 +39,7 @@ class EmittersPlugin implements IPlugin {
             loadEmitters = true;
         } else if (
             options.interactivity?.events?.onClick?.mode &&
-            Utils.isInArray(EmitterClickMode.emitter, options.interactivity.events.onClick.mode)
+            isInArray(EmitterClickMode.emitter, options.interactivity.events.onClick.mode)
         ) {
             loadEmitters = true;
         }

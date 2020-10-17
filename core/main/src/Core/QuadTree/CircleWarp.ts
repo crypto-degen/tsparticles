@@ -1,8 +1,8 @@
 import { Range } from "./Range";
-import type { ICoordinates } from "../Core/Interfaces/ICoordinates";
+import type { ICoordinates } from "../Interfaces/ICoordinates";
 import { Rectangle } from "./Rectangle";
 import { Circle } from "./Circle";
-import type { IDimension } from "../Core/Interfaces/IDimension";
+import type { IDimension } from "../Interfaces/IDimension";
 
 /**
  * @category Utils

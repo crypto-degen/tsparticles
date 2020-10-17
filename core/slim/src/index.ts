@@ -1,29 +1,28 @@
-import { MainSlim } from "./main";
-import { initPjs } from "./pjs";
-import {
-    CanvasUtils,
-    Circle,
-    CircleWarp,
-    ColorUtils,
-    Constants,
-    Point,
-    Rectangle,
-    Utils,
-} from "tsparticles-core/dist/Utils";
-import type { IOptions } from "tsparticles-core/dist/Options/Interfaces/IOptions";
-import type { RecursivePartial } from "tsparticles-core/dist/Types";
+import { particlesJS, pJSDom, ShapeType, tsParticles } from "tsparticles-core";
+import { SquareDrawer } from "tsparticles-core/dist/ShapeDrawers/SquareDrawer";
+import { TextDrawer } from "tsparticles-core/dist/ShapeDrawers/TextDrawer";
+import { ImageDrawer } from "tsparticles-core/dist/ShapeDrawers/ImageDrawer";
+import { LineDrawer } from "tsparticles-core/dist/ShapeDrawers/LineDrawer";
+import { CircleDrawer } from "tsparticles-core/dist/ShapeDrawers/CircleDrawer";
+import { TriangleDrawer } from "tsparticles-core/dist/ShapeDrawers/TriangleDrawer";
+import { StarDrawer } from "tsparticles-core/dist/ShapeDrawers/StarDrawer";
+import { PolygonDrawer } from "tsparticles-core/dist/ShapeDrawers/PolygonDrawer";
 
-/* ---------- tsParticles functions - start ------------ */
-const tsParticles = new MainSlim();
+const squareDrawer = new SquareDrawer();
+const textDrawer = new TextDrawer();
+const imageDrawer = new ImageDrawer();
 
-tsParticles.init();
+tsParticles.addShape(ShapeType.line, new LineDrawer());
+tsParticles.addShape(ShapeType.circle, new CircleDrawer());
+tsParticles.addShape(ShapeType.edge, squareDrawer);
+tsParticles.addShape(ShapeType.square, squareDrawer);
+tsParticles.addShape(ShapeType.triangle, new TriangleDrawer());
+tsParticles.addShape(ShapeType.star, new StarDrawer());
+tsParticles.addShape(ShapeType.polygon, new PolygonDrawer());
+tsParticles.addShape(ShapeType.char, textDrawer);
+tsParticles.addShape(ShapeType.character, textDrawer);
+tsParticles.addShape(ShapeType.image, imageDrawer);
+tsParticles.addShape(ShapeType.images, imageDrawer);
 
-const { particlesJS, pJSDom } = initPjs(tsParticles);
-
-export * from "tsparticles-core/dist/Core/Container";
-export * from "tsparticles-core/dist/Enums";
-export { CanvasUtils, Circle, CircleWarp, ColorUtils, Constants, Point, Rectangle, Utils };
-export * from "tsparticles-core/dist/Types";
+export * from "tsparticles-core";
 export { tsParticles, particlesJS, pJSDom };
-export { IOptions };
-export type ISourceOptions = RecursivePartial<IOptions>;

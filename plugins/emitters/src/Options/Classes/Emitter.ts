@@ -5,9 +5,9 @@ import { MoveDirection, MoveDirectionAlt } from "tsparticles-core/dist/Enums";
 import type { IParticles } from "tsparticles-core/dist/Options/Interfaces/Particles/IParticles";
 import { EmitterRate } from "./EmitterRate";
 import { EmitterLife } from "./EmitterLife";
-import { Utils } from "tsparticles-core/dist/Utils";
 import { EmitterSize } from "./EmitterSize";
 import type { IOptionLoader } from "tsparticles-core/dist/Options/Interfaces/IOptionLoader";
+import { deepExtend } from "tsparticles-core";
 
 /**
  * [[include:Options/Plugins/Emitters.md]]
@@ -47,7 +47,7 @@ export class Emitter implements IEmitter, IOptionLoader<IEmitter> {
         this.life.load(data.life);
 
         if (data.particles !== undefined) {
-            this.particles = Utils.deepExtend({}, data.particles) as RecursivePartial<IParticles>;
+            this.particles = deepExtend({}, data.particles) as RecursivePartial<IParticles>;
         }
 
         this.rate.load(data.rate);

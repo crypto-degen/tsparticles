@@ -1,11 +1,23 @@
 import type { Container } from "../../Core/Container";
 import type { IBubblerProcessParam } from "../../Core/Interfaces/IBubblerProcessParam";
-import { Circle, ColorUtils, Constants, NumberUtils, Rectangle, Utils } from "../../Utils";
+import {
+    clamp,
+    colorToHsl,
+    divMode,
+    divModeExecute,
+    getDistance,
+    isDivModeEnabled,
+    isInArray,
+    itemFromArray,
+    mouseLeaveEvent,
+    mouseMoveEvent,
+} from "../../Utils";
 import { ClickMode, DivMode, DivType, HoverMode, ProcessBubbleType } from "../../Enums";
 import { Particle } from "../../Core/Particle";
 import { DivEvent } from "../../Options/Classes/Interactivity/Events/DivEvent";
 import type { IExternalInteractor } from "../../Core/Interfaces/IExternalInteractor";
 import { BubbleDiv } from "../../Options/Classes/Interactivity/Modes/BubbleDiv";
+import { Circle, Rectangle } from "../../Core/QuadTree";
 
 /**
  * Particle bubble manager
@@ -23,11 +35,11 @@ export class Bubbler implements IExternalInteractor {
         if (modeValue > optionsValue) {
             const size = particleValue + (modeValue - optionsValue) * ratio;
 
-            return NumberUtils.clamp(size, particleValue, modeValue);
+            return clamp(size, particleValue, modeValue);
         } else if (modeValue < optionsValue) {
             const size = particleValue - (optionsValue - modeValue) * ratio;
 
-            return NumberUtils.clamp(size, modeValue, particleValue);
+            return clamp(size, modeValue, particleValue);
         }
     }
 
@@ -39,7 +51,7 @@ export class Bubbler implements IExternalInteractor {
         const events = options.interactivity.events;
         const divs = events.onDiv;
 
-        const divBubble = Utils.isDivModeEnabled(DivMode.bubble, divs);
+        const divBubble = isDivModeEnabled(DivMode.bubble, divs);
 
         if (
             !(divBubble || (events.onHover.enable && mouse.position) || (events.onClick.enable && mouse.clickPosition))
@@ -50,9 +62,7 @@ export class Bubbler implements IExternalInteractor {
         const hoverMode = events.onHover.mode;
         const clickMode = events.onClick.mode;
 
-        return (
-            Utils.isInArray(HoverMode.bubble, hoverMode) || Utils.isInArray(ClickMode.bubble, clickMode) || divBubble
-        );
+        return isInArray(HoverMode.bubble, hoverMode) || isInArray(ClickMode.bubble, clickMode) || divBubble;
     }
 
     public reset(particle: Particle, force?: boolean): void {
@@ -76,14 +86,12 @@ export class Bubbler implements IExternalInteractor {
         const divs = events.onDiv;
 
         /* on hover event */
-        if (hoverEnabled && Utils.isInArray(HoverMode.bubble, hoverMode)) {
+        if (hoverEnabled && isInArray(HoverMode.bubble, hoverMode)) {
             this.hoverBubble();
-        } else if (clickEnabled && Utils.isInArray(ClickMode.bubble, clickMode)) {
+        } else if (clickEnabled && isInArray(ClickMode.bubble, clickMode)) {
             this.clickBubble();
         } else {
-            Utils.divModeExecute(DivMode.bubble, divs, (selector, div): void =>
-                this.singleSelectorHover(selector, div)
-            );
+            divModeExecute(DivMode.bubble, divs, (selector, div): void => this.singleSelectorHover(selector, div));
         }
     }
 
@@ -124,7 +132,7 @@ export class Bubbler implements IExternalInteractor {
                 particle.bubble.inRange = true;
 
                 const divs = container.options.interactivity.modes.bubble.divs;
-                const divBubble = Utils.divMode(divs, elem);
+                const divBubble = divMode(divs, elem);
 
                 if (!particle.bubble.div || particle.bubble.div !== elem) {
                     this.reset(particle, true);
@@ -219,7 +227,7 @@ export class Bubbler implements IExternalInteractor {
             particle.bubble.inRange = !container.bubble.durationEnd;
 
             const pos = particle.getPosition();
-            const distMouse = NumberUtils.getDistance(pos, mouseClickPos);
+            const distMouse = getDistance(pos, mouseClickPos);
             const timeSpent = (new Date().getTime() - (container.interactivity.mouse.clickTime || 0)) / 1000;
 
             if (timeSpent > options.interactivity.modes.bubble.duration) {
@@ -281,12 +289,12 @@ export class Bubbler implements IExternalInteractor {
             particle.bubble.inRange = true;
 
             const pos = particle.getPosition();
-            const pointDistance = NumberUtils.getDistance(pos, mousePos);
+            const pointDistance = getDistance(pos, mousePos);
             const ratio = 1 - pointDistance / distance;
 
             /* mousemove - check ratio */
             if (pointDistance <= distance) {
-                if (ratio >= 0 && container.interactivity.status === Constants.mouseMoveEvent) {
+                if (ratio >= 0 && container.interactivity.status === mouseMoveEvent) {
                     /* size */
                     this.hoverBubbleSize(particle, ratio);
 
@@ -301,7 +309,7 @@ export class Bubbler implements IExternalInteractor {
             }
 
             /* mouseleave */
-            if (container.interactivity.status === Constants.mouseLeaveEvent) {
+            if (container.interactivity.status === mouseLeaveEvent) {
                 this.reset(particle);
             }
         }
@@ -353,9 +361,9 @@ export class Bubbler implements IExternalInteractor {
                 return;
             }
 
-            const bubbleColor = modeColor instanceof Array ? Utils.itemFromArray(modeColor) : modeColor;
+            const bubbleColor = modeColor instanceof Array ? itemFromArray(modeColor) : modeColor;
 
-            particle.bubble.color = ColorUtils.colorToHsl(bubbleColor);
+            particle.bubble.color = colorToHsl(bubbleColor);
         }
     }
 }

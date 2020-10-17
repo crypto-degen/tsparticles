@@ -1,7 +1,7 @@
 import { Container } from "./Container";
 import type { IOptions } from "../Options/Interfaces/IOptions";
 import type { RecursivePartial } from "../Types";
-import { Constants, Utils } from "../Utils";
+import { canvasClass, itemFromArray } from "../Utils";
 import type { Particle } from "./Particle";
 import type { ICoordinates } from "./Interfaces/ICoordinates";
 import type { SingleOrMultiple } from "../Types";
@@ -69,7 +69,7 @@ export class Loader {
         options?: SingleOrMultiple<RecursivePartial<IOptions>>,
         index?: number
     ): Promise<Container | undefined> {
-        const currentOptions = options instanceof Array ? Utils.itemFromArray(options, index) : options;
+        const currentOptions = options instanceof Array ? itemFromArray(options, index) : options;
         const dom = Loader.dom();
         const oldIndex = dom.findIndex((v) => v.id === id);
 
@@ -96,7 +96,7 @@ export class Loader {
                 canvasEl = existingCanvases[0];
 
                 if (!canvasEl.className) {
-                    canvasEl.className = Constants.canvasClass;
+                    canvasEl.className = canvasClass;
                 }
 
                 generatedCanvas = false;
@@ -105,7 +105,7 @@ export class Loader {
                 /* create canvas element */
                 canvasEl = document.createElement("canvas");
 
-                canvasEl.className = Constants.canvasClass;
+                canvasEl.className = canvasClass;
 
                 /* set size canvas */
                 canvasEl.style.width = "100%";
@@ -145,7 +145,7 @@ export class Loader {
         jsonUrl: SingleOrMultiple<string>,
         index?: number
     ): Promise<Container | undefined> {
-        const url = jsonUrl instanceof Array ? Utils.itemFromArray(jsonUrl, index) : jsonUrl;
+        const url = jsonUrl instanceof Array ? itemFromArray(jsonUrl, index) : jsonUrl;
 
         /* load json config */
         const response = await fetch(url);

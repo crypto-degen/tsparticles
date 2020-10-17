@@ -5,13 +5,13 @@ import { BackgroundMask } from "./BackgroundMask/BackgroundMask";
 import type { RecursivePartial } from "../../Types";
 import { Background } from "./Background/Background";
 import { Infection } from "./Infection/Infection";
-import { Plugins } from "../../Utils";
 import type { IOptionLoader } from "../Interfaces/IOptionLoader";
 import { Theme } from "./Theme/Theme";
 import { ThemeMode } from "../../Enums/Modes";
 import { BackgroundMode } from "./BackgroundMode/BackgroundMode";
 import { Motion } from "./Motion/Motion";
 import { ManualParticle } from "./ManualParticle";
+import { Plugins } from "../../Core/Plugins";
 
 /**
  * [[include:Options.md]]

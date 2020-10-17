@@ -1,6 +1,6 @@
 import type { Container } from "../Container";
 import type { Particle } from "../Particle";
-import { NumberUtils, Utils } from "../../Utils";
+import { calculateBounds, getValue, isPointInside, randomInRange } from "../../Utils";
 import { AnimationStatus, DestroyType, OutMode, OutModeAlt } from "../../Enums";
 import type { IDelta } from "../Interfaces/IDelta";
 import { OutModeDirection } from "../../Enums/Directions/OutModeDirection";
@@ -82,8 +82,8 @@ export class Updater {
 
                 const canvasSize = this.container.canvas.size;
 
-                particle.position.x = NumberUtils.randomInRange(0, canvasSize.width);
-                particle.position.y = NumberUtils.randomInRange(0, canvasSize.height);
+                particle.position.x = randomInRange(0, canvasSize.width);
+                particle.position.y = randomInRange(0, canvasSize.height);
 
                 particle.spawning = true;
                 particle.lifeDelayTime = 0;
@@ -91,8 +91,8 @@ export class Updater {
 
                 const lifeOptions = particle.particlesOptions.life;
 
-                particle.lifeDelay = NumberUtils.getValue(lifeOptions.delay) * 1000;
-                particle.lifeDuration = NumberUtils.getValue(lifeOptions.duration) * 1000;
+                particle.lifeDelay = getValue(lifeOptions.delay) * 1000;
+                particle.lifeDuration = getValue(lifeOptions.duration) * 1000;
             }
         }
     }
@@ -266,12 +266,12 @@ export class Updater {
 
                 break;
             case OutMode.destroy:
-                if (!Utils.isPointInside(particle.position, container.canvas.size, particle.getRadius(), direction)) {
+                if (!isPointInside(particle.position, container.canvas.size, particle.getRadius(), direction)) {
                     container.particles.remove(particle);
                 }
                 break;
             case OutMode.out:
-                if (!Utils.isPointInside(particle.position, container.canvas.size, particle.getRadius(), direction)) {
+                if (!isPointInside(particle.position, container.canvas.size, particle.getRadius(), direction)) {
                     this.fixOutOfCanvasPosition(direction);
                 }
                 break;
@@ -281,9 +281,7 @@ export class Updater {
                 }
 
                 if (!gravityOptions.enable) {
-                    if (
-                        !Utils.isPointInside(particle.position, container.canvas.size, particle.getRadius(), direction)
-                    ) {
+                    if (!isPointInside(particle.position, container.canvas.size, particle.getRadius(), direction)) {
                         container.particles.remove(particle);
                     }
                 } else {
@@ -315,7 +313,7 @@ export class Updater {
         };
 
         const sizeValue = particle.getRadius();
-        const nextBounds = Utils.calculateBounds(particle.position, sizeValue);
+        const nextBounds = calculateBounds(particle.position, sizeValue);
 
         if (direction === OutModeDirection.right && nextBounds.left > canvasSize.width - particle.offset.x) {
             particle.position.x = newPos.left;
@@ -372,7 +370,7 @@ export class Updater {
         const pos = particle.getPosition(),
             offset = particle.offset,
             size = particle.getRadius(),
-            bounds = Utils.calculateBounds(pos, size),
+            bounds = calculateBounds(pos, size),
             canvasSize = container.canvas.size;
 
         if (outMode === OutMode.bounce || outMode === OutMode.bounceHorizontal || outMode === "bounceHorizontal") {
@@ -383,7 +381,7 @@ export class Updater {
                 (direction === OutModeDirection.right && bounds.right >= canvasSize.width && velocity > 0) ||
                 (direction === OutModeDirection.left && bounds.left <= 0 && velocity < 0)
             ) {
-                const newVelocity = NumberUtils.getValue(particle.particlesOptions.bounce.horizontal);
+                const newVelocity = getValue(particle.particlesOptions.bounce.horizontal);
 
                 particle.velocity.horizontal *= -newVelocity;
 
@@ -411,7 +409,7 @@ export class Updater {
                     velocity > 0) ||
                 (direction === OutModeDirection.top && bounds.top <= 0 && velocity < 0)
             ) {
-                const newVelocity = NumberUtils.getValue(particle.particlesOptions.bounce.vertical);
+                const newVelocity = getValue(particle.particlesOptions.bounce.vertical);
 
                 particle.velocity.vertical *= -newVelocity;
 

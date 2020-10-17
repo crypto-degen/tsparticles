@@ -1,4 +1,4 @@
-import { Utils } from "../../Utils";
+import { isInArray } from "../../Utils";
 import { HoverMode } from "../../Enums/Modes";
 import type { Container } from "../../Core/Container";
 import type { IParticlesInteractor } from "../../Core/Interfaces/IParticlesInteractor";
@@ -31,7 +31,7 @@ export class Lighter implements IParticlesInteractor {
 
         const hoverMode = events.onHover.mode;
 
-        return Utils.isInArray(HoverMode.light, hoverMode);
+        return isInArray(HoverMode.light, hoverMode);
     }
 
     public reset(): void {

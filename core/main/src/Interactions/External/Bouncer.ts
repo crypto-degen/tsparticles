@@ -1,8 +1,17 @@
 import type { IExternalInteractor } from "../../Core/Interfaces/IExternalInteractor";
-import { Constants } from "../../Utils";
 import { HoverMode } from "../../Enums/Modes";
 import type { Container } from "../../Core/Container";
-import { Circle, Range, Rectangle, Utils } from "../../Utils";
+import { Circle, Range, Rectangle } from "../../Core/QuadTree";
+import {
+    calculateBounds,
+    circleBounce,
+    circleBounceDataFromParticle,
+    divModeExecute,
+    isDivModeEnabled,
+    isInArray,
+    mouseMoveEvent,
+    rectBounce,
+} from "../../Utils";
 import { DivMode } from "../../Enums/Modes";
 import { DivEvent } from "../../Options/Classes/Interactivity/Events/DivEvent";
 import { DivType } from "../../Enums/Types";
@@ -18,8 +27,8 @@ export class Bouncer implements IExternalInteractor {
         const events = options.interactivity.events;
         const divs = events.onDiv;
         return (
-            (mouse.position && events.onHover.enable && Utils.isInArray(HoverMode.bounce, events.onHover.mode)) ||
-            Utils.isDivModeEnabled(DivMode.bounce, divs)
+            (mouse.position && events.onHover.enable && isInArray(HoverMode.bounce, events.onHover.mode)) ||
+            isDivModeEnabled(DivMode.bounce, divs)
         );
     }
 
@@ -27,17 +36,15 @@ export class Bouncer implements IExternalInteractor {
         const container = this.container;
         const options = container.options;
         const events = options.interactivity.events;
-        const mouseMoveStatus = container.interactivity.status === Constants.mouseMoveEvent;
+        const mouseMoveStatus = container.interactivity.status === mouseMoveEvent;
         const hoverEnabled = events.onHover.enable;
         const hoverMode = events.onHover.mode;
         const divs = events.onDiv;
 
-        if (mouseMoveStatus && hoverEnabled && Utils.isInArray(HoverMode.bounce, hoverMode)) {
+        if (mouseMoveStatus && hoverEnabled && isInArray(HoverMode.bounce, hoverMode)) {
             this.processMouseBounce();
         } else {
-            Utils.divModeExecute(DivMode.bounce, divs, (selector, div): void =>
-                this.singleSelectorBounce(selector, div)
-            );
+            divModeExecute(DivMode.bounce, divs, (selector, div): void => this.singleSelectorBounce(selector, div));
         }
     }
 
@@ -94,7 +101,7 @@ export class Bouncer implements IExternalInteractor {
 
         for (const particle of query) {
             if (area instanceof Circle) {
-                Utils.circleBounce(Utils.circleBounceDataFromParticle(particle), {
+                circleBounce(circleBounceDataFromParticle(particle), {
                     position,
                     radius,
                     velocity: {
@@ -107,7 +114,7 @@ export class Bouncer implements IExternalInteractor {
                     },
                 });
             } else if (area instanceof Rectangle) {
-                Utils.rectBounce(particle, Utils.calculateBounds(position, radius));
+                rectBounce(particle, calculateBounds(position, radius));
             }
         }
     }

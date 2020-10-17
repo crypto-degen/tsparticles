@@ -1,10 +1,10 @@
 import type { IShapeDrawer } from "../Core/Interfaces/IShapeDrawer";
 import type { IParticle } from "../Core/Interfaces/IParticle";
-import { Utils } from "../Utils";
 import { ShapeType } from "../Enums";
 import type { IImageShape } from "../Options/Interfaces/Particles/Shape/IImageShape";
 import type { IImage } from "../Core/Interfaces/IImage";
 import type { Container } from "../Core/Container";
+import { downloadSvgImage, isInArray, loadImage } from "../Utils";
 
 interface ContainerImage {
     id: string;
@@ -50,10 +50,7 @@ export class ImageDrawer implements IShapeDrawer {
         const options = container.options;
         const shapeOptions = options.particles.shape;
 
-        if (
-            !Utils.isInArray(ShapeType.image, shapeOptions.type) &&
-            !Utils.isInArray(ShapeType.images, shapeOptions.type)
-        ) {
+        if (!isInArray(ShapeType.image, shapeOptions.type) && !isInArray(ShapeType.images, shapeOptions.type)) {
             return;
         }
 
@@ -75,8 +72,8 @@ export class ImageDrawer implements IShapeDrawer {
     private async loadImageShape(container: Container, imageShape: IImageShape): Promise<void> {
         try {
             const image = imageShape.replaceColor
-                ? await Utils.downloadSvgImage(imageShape.src)
-                : await Utils.loadImage(imageShape.src);
+                ? await downloadSvgImage(imageShape.src)
+                : await loadImage(imageShape.src);
 
             this.addImage(container, image);
         } catch {

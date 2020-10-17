@@ -1,8 +1,8 @@
 import type { IDrawStroke } from "../Interfaces/IDrawStroke";
 import type { RecursivePartial } from "tsparticles-core/dist/Types";
 import { OptionsColor } from "tsparticles-core/dist/Options/Classes/OptionsColor";
-import { ColorUtils } from "tsparticles-core/dist/Utils";
 import type { IOptionLoader } from "tsparticles-core/dist/Options/Interfaces/IOptionLoader";
+import { stringToAlpha } from "tsparticles-core";
 
 /**
  * @category Polygon Mask Plugin
@@ -23,7 +23,7 @@ export class DrawStroke implements IDrawStroke, IOptionLoader<IDrawStroke> {
             this.color = OptionsColor.create(this.color, data.color);
 
             if (typeof this.color.value === "string") {
-                this.opacity = ColorUtils.stringToAlpha(this.color.value) ?? this.opacity;
+                this.opacity = stringToAlpha(this.color.value) ?? this.opacity;
             }
 
             if (data.opacity !== undefined) {

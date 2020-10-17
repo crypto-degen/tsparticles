@@ -1,6 +1,6 @@
 import type { Container } from "./Container";
 import type { Particle } from "./Particle";
-import { Utils } from "../Utils";
+import { isSsr } from "../Utils";
 
 /**
  * @category Core
@@ -33,7 +33,7 @@ export class Retina {
         const options = container.options;
 
         if (options.detectRetina) {
-            this.pixelRatio = Utils.isSsr() ? 1 : window.devicePixelRatio;
+            this.pixelRatio = isSsr() ? 1 : window.devicePixelRatio;
         } else {
             this.pixelRatio = 1;
         }
@@ -41,7 +41,7 @@ export class Retina {
         const motionOptions = this.container.options.motion;
 
         if (motionOptions && (motionOptions.disable || motionOptions.reduce.value)) {
-            if (Utils.isSsr() || typeof matchMedia === "undefined" || !matchMedia) {
+            if (isSsr() || typeof matchMedia === "undefined" || !matchMedia) {
                 this.reduceFactor = 1;
             } else {
                 const mediaQuery = matchMedia("(prefers-reduced-motion: reduce)");

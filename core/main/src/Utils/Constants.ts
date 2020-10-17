@@ -1,28 +1,28 @@
 /**
  * Project's constants
  * @category Utils
+ * @packageDocumentation
  */
-export class Constants {
-    /**
-     * Particles canvas element class name
-     */
-    public static readonly canvasClass: string = "tsparticles-canvas-el";
 
-    public static readonly randomColorValue: string = "random";
-    public static readonly midColorValue: string = "mid";
+/**
+ * Particles canvas element class name
+ */
+export const canvasClass = "tsparticles-canvas-el";
 
-    public static readonly touchEndEvent: string = "touchend";
-    public static readonly mouseDownEvent: string = "mousedown";
-    public static readonly mouseUpEvent: string = "mouseup";
-    public static readonly mouseMoveEvent: string = "mousemove";
-    public static readonly touchStartEvent: string = "touchstart";
-    public static readonly touchMoveEvent: string = "touchmove";
-    public static readonly mouseLeaveEvent: string = "mouseleave";
-    public static readonly mouseOutEvent: string = "mouseout";
-    public static readonly touchCancelEvent: string = "touchcancel";
-    public static readonly resizeEvent: string = "resize";
-    public static readonly visibilityChangeEvent: string = "visibilitychange";
+export const randomColorValue = "random";
+export const midColorValue = "mid";
 
-    public static readonly noPolygonDataLoaded: string = "No polygon data loaded.";
-    public static readonly noPolygonFound: string = "No polygon found, you need to specify SVG url in config.";
-}
+export const touchEndEvent = "touchend";
+export const mouseDownEvent = "mousedown";
+export const mouseUpEvent = "mouseup";
+export const mouseMoveEvent = "mousemove";
+export const touchStartEvent = "touchstart";
+export const touchMoveEvent = "touchmove";
+export const mouseLeaveEvent = "mouseleave";
+export const mouseOutEvent = "mouseout";
+export const touchCancelEvent = "touchcancel";
+export const resizeEvent = "resize";
+export const visibilityChangeEvent = "visibilitychange";
+
+export const noPolygonDataLoaded = "No polygon data loaded.";
+export const noPolygonFound = "No polygon found, you need to specify SVG url in config.";
