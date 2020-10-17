@@ -1,4 +1,4 @@
-import { tsParticles } from "tsparticles";
+import { tsParticles } from "tsparticles-core";
 
 tsParticles.addPreset("basic", {
     particles: {

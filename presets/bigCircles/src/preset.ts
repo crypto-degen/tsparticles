@@ -1,4 +1,4 @@
-import { InteractivityDetect, MoveDirection, OutMode, ShapeType, tsParticles } from "tsparticles";
+import { InteractivityDetect, MoveDirection, OutMode, ShapeType, tsParticles } from "tsparticles-core";
 
 const options = {
     fpsLimit: 60,

@@ -1,9 +1,5 @@
 {
-  "name": "tsparticles",
-  "sideEffects": [
-    "./dist/index.js",
-    "./dist/tsparticles.js"
-  ],
+  "name": "tsparticles-core",
   "version": "1.18.4",
   "description": "Easily add particle animations to your website. Browser ready and with official React/Vue/Angular/jQuery/Preact components.",
   "homepage": "https://particles.matteobruni.it/",
@@ -91,8 +87,8 @@
     "url": "https://github.com/matteobruni/tsparticles/issues"
   },
   "main": "dist/index.js",
-  "jsdelivr": "dist/tsparticles.min.js",
-  "unpkg": "dist/tsparticles.min.js",
+  "jsdelivr": "dist/tsparticles.core.min.js",
+  "unpkg": "dist/tsparticles.core.min.js",
   "browser": "dist/index.js",
   "funding": {
     "type": "github",

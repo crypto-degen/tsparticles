@@ -1,7 +1,7 @@
-import type { Container } from "tsparticles";
-import type { IClickEvent } from "tsparticles/dist/Options/Interfaces/Interactivity/Events/IClickEvent";
+import type { Container } from "tsparticles-core";
+import type { IClickEvent } from "tsparticles-core/dist/Options/Interfaces/Interactivity/Events/IClickEvent";
 import { EditorGroup, EditorType } from "object-gui";
-import { AbsorberClickMode, ClickMode, EmitterClickMode } from "tsparticles";
+import { ClickMode } from "tsparticles-core";
 import { EditorBase } from "../../../../EditorBase";
 
 export class ClickEventsOptionsEditor extends EditorBase {
@@ -55,6 +55,7 @@ export class ClickEventsOptionsEditor extends EditorBase {
                 },
             ]);
 
+        /*
         if (typeof AbsorberClickMode !== "undefined") {
             const absorbersGroup = "Absorbers";
 
@@ -68,5 +69,6 @@ export class ClickEventsOptionsEditor extends EditorBase {
             modeSelectInput.addItemGroup(emittersGroup);
             modeSelectInput.addItem(EmitterClickMode.emitter, undefined, emittersGroup);
         }
+        */
     }
 }

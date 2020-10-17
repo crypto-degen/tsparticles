@@ -1,4 +1,4 @@
-import { MoveDirection, tsParticles } from "tsparticles";
+import { MoveDirection, tsParticles } from "tsparticles-core";
 
 tsParticles.addPreset("snow", {
     particles: {

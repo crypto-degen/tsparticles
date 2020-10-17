@@ -1,8 +1,8 @@
-import { tsParticles, Utils } from "tsparticles";
-import type { IParticle } from "tsparticles/dist/Core/Interfaces/IParticle";
-import type { IShapeDrawer } from "tsparticles/dist/Core/Interfaces/IShapeDrawer";
+import { tsParticles, Utils } from "tsparticles-core";
+import type { IParticle } from "tsparticles-core/dist/Core/Interfaces/IParticle";
+import type { IShapeDrawer } from "tsparticles-core/dist/Core/Interfaces/IShapeDrawer";
 import type { Container, SingleOrMultiple } from "tsparticles";
-import type { IShapeValues } from "tsparticles/dist/Options/Interfaces/Particles/Shape/IShapeValues";
+import type { IShapeValues } from "tsparticles-core/dist/Options/Interfaces/Particles/Shape/IShapeValues";
 
 type CSSOMString = string;
 type FontFaceLoadStatus = "unloaded" | "loading" | "loaded" | "error";

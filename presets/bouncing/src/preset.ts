@@ -1,4 +1,4 @@
-import { OutMode, tsParticles } from "tsparticles";
+import { OutMode, tsParticles } from "tsparticles-core";
 
 tsParticles.addPreset("bouncing", {
     particles: {

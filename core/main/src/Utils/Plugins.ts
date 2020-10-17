@@ -5,6 +5,8 @@ import type { RecursivePartial } from "../Types";
 import type { IOptions } from "../Options/Interfaces/IOptions";
 import type { IShapeDrawer } from "../Core/Interfaces/IShapeDrawer";
 import type { Options } from "../Options/Classes/Options";
+import { IExternalInteractor } from "../Core/Interfaces/IExternalInteractor";
+import { IParticlesInteractor } from "../Core/Interfaces/IParticlesInteractor";
 
 /**
  * @category Utils
@@ -16,6 +18,8 @@ export class Plugins {
         RecursivePartial<IOptions>
     >();
     private static readonly drawers: Map<string, IShapeDrawer> = new Map<string, IShapeDrawer>();
+    private static readonly externalInteractors: IExternalInteractor[] = [];
+    private static readonly particleInteractors: IParticlesInteractor[] = [];
 
     public static getPlugin(plugin: string): IPlugin | undefined {
         return Plugins.plugins.find((t) => t.id === plugin);

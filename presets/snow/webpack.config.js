@@ -30,7 +30,7 @@ const getConfig = (entry) => {
         },
         externals: [
             {
-                "tsparticles": "window"
+                "tsparticles-core": "window"
             }
         ],
         module: {

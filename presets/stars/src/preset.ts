@@ -1,4 +1,4 @@
-import { MoveDirection, OutMode, ShapeType, tsParticles } from "tsparticles";
+import { MoveDirection, OutMode, ShapeType, tsParticles } from "tsparticles-core";
 
 tsParticles.addPreset("stars", {
     particles: {

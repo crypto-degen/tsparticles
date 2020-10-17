@@ -1,6 +1,6 @@
 import type { EditorGroup } from "object-gui";
-import type { IParticles } from "tsparticles/dist/Options/Interfaces/Particles/IParticles";
-import type { Container } from "tsparticles";
+import type { IParticles } from "tsparticles-core/dist/Options/Interfaces/Particles/IParticles";
+import type { Container } from "tsparticles-core";
 import { LinksOptionsEditor } from "./Links/LinksOptionsEditor";
 import { OpacityOptionsEditor } from "./Opacity/OpacityOptionsEditor";
 import { ColorOptionsEditor } from "./Color/ColorOptionsEditor";

@@ -1,4 +1,4 @@
-import { ClickMode, tsParticles } from "tsparticles";
+import { ClickMode, tsParticles } from "tsparticles-core";
 
 tsParticles.addPreset("fire", {
     fpsLimit: 40,

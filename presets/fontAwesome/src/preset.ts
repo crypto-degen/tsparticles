@@ -1,6 +1,6 @@
-import { tsParticles } from "tsparticles";
-import type { ISourceOptions } from "tsparticles";
-import type { IShapeValues } from "tsparticles/dist/Options/Interfaces/Particles/Shape/IShapeValues";
+import { tsParticles } from "tsparticles-core";
+import type { ISourceOptions } from "tsparticles-core";
+import type { IShapeValues } from "tsparticles-core/dist/Options/Interfaces/Particles/Shape/IShapeValues";
 
 interface ICharacterShape extends IShapeValues {
     font: string;

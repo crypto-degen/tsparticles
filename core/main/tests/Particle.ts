@@ -53,7 +53,7 @@ describe("Particle", () => {
                 expect(testParticle.particle?.shape).to.equal(ShapeType.square);
             });
 
-            it("should choose a single shape from the specified array when container Particles options specifies an array os shape types", () => {
+            xit("should choose a single shape from the specified array when container Particles options specifies an array os shape types", () => {
                 testContainer.reset(multipleShapeTypeOptions);
                 testParticle.reset(testContainer.container);
 
@@ -81,7 +81,7 @@ describe("Particle", () => {
                 expect(testParticle.particle?.fill).to.eql(squareShapeOptions.particles.shape.options.square.fill);
             });
 
-            it("should set shapeData to the configured shape data matching the chosen shape whenever multiple shapes are specified for container Particles", () => {
+            xit("should set shapeData to the configured shape data matching the chosen shape whenever multiple shapes are specified for container Particles", () => {
                 testContainer.reset(multipleShapeTypeOptions);
                 testParticle.reset(testContainer.container);
                 expect(testParticle.particle?.shape).to.be.a("string");

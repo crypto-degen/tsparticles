@@ -1,4 +1,4 @@
-import { HoverMode, ISourceOptions, tsParticles } from "tsparticles";
+import { HoverMode, ISourceOptions, tsParticles } from "tsparticles-core";
 
 const data: ISourceOptions = {
     backgroundMask: {

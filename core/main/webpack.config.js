@@ -79,11 +79,7 @@ const getConfig = (entry) => {
 
 module.exports = [
     getConfig({
-        "tsparticles.slim": "./dist/index.slim.js",
-        "tsparticles.slim.min": "./dist/index.slim.js"
-    }),
-    getConfig({
-        tsparticles: "./dist/index.js",
-        "tsparticles.min": "./dist/index.js"
+        "tsparticles.core": "./dist/index.js",
+        "tsparticles.core.min": "./dist/index.js"
     })
 ];

@@ -1,5 +1,5 @@
-import { tsParticles } from "tsparticles";
-import { IParticle } from "tsparticles/dist/Core/Interfaces/IParticle";
+import { tsParticles } from "tsparticles-core";
+import type { IParticle } from "tsparticles-core/dist/Core/Interfaces/IParticle";
 
 tsParticles.addShape(
     "bubble",
