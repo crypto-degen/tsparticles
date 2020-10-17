@@ -3,6 +3,8 @@ import type { IClickEvent } from "tsparticles-core/dist/Options/Interfaces/Inter
 import { EditorGroup, EditorType } from "object-gui";
 import { ClickMode } from "tsparticles-core";
 import { EditorBase } from "../../../../EditorBase";
+import { AbsorberClickMode } from "tsparticles-plugin-absorbers";
+import { EmitterClickMode } from "tsparticles-plugin-emitters";
 
 export class ClickEventsOptionsEditor extends EditorBase {
     public group!: EditorGroup;
@@ -55,7 +57,6 @@ export class ClickEventsOptionsEditor extends EditorBase {
                 },
             ]);
 
-        /*
         if (typeof AbsorberClickMode !== "undefined") {
             const absorbersGroup = "Absorbers";
 
@@ -69,6 +70,5 @@ export class ClickEventsOptionsEditor extends EditorBase {
             modeSelectInput.addItemGroup(emittersGroup);
             modeSelectInput.addItem(EmitterClickMode.emitter, undefined, emittersGroup);
         }
-        */
     }
 }

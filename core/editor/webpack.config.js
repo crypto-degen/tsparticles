@@ -39,10 +39,28 @@ const getJsConfig = (entry) => {
         },
         externals: [
             {
-                tsparticles: {
+                "tsparticles-core": {
                     commonjs: "tsparticles",
                     commonjs2: "tsparticles",
                     amd: "tsparticles",
+                    root: "window"
+                },
+                "tsparticles-plugins-absorbers": {
+                    commonjs: "tsparticles-plugins-absorbers",
+                    commonjs2: "tsparticles-plugins-absorbers",
+                    amd: "tsparticles-plugins-absorbers",
+                    root: "window"
+                },
+                "tsparticles-plugins-emitters": {
+                    commonjs: "tsparticles-plugins-emitters",
+                    commonjs2: "tsparticles-plugins-emitters",
+                    amd: "tsparticles-plugins-emitters",
+                    root: "window"
+                },
+                "tsparticles-plugins-polygon-mask": {
+                    commonjs: "tsparticles-plugins-polygon-mask",
+                    commonjs2: "tsparticles-plugins-polygon-mask",
+                    amd: "tsparticles-plugins-polygon-mask",
                     root: "window"
                 },
                 "object-gui": {
