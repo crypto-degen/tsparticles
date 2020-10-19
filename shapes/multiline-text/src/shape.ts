@@ -1,7 +1,7 @@
 import { isInArray, itemFromArray, loadFont, tsParticles } from "tsparticles-core";
 import type { IParticle } from "tsparticles-core/dist/Core/Interfaces/IParticle";
 import type { IShapeDrawer } from "tsparticles-core/dist/Core/Interfaces/IShapeDrawer";
-import type { Container, SingleOrMultiple } from "tsparticles";
+import type { Container, SingleOrMultiple } from "tsparticles-core";
 import type { IShapeValues } from "tsparticles-core/dist/Options/Interfaces/Particles/Shape/IShapeValues";
 
 type CSSOMString = string;
