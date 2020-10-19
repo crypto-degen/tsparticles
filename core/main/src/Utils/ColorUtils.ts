@@ -70,7 +70,7 @@ export function colorToRgb(input?: string | IColor, index?: number, useIndex = t
 export function colorToHsl(color: string | IColor | undefined, index?: number, useIndex = true): IHsl | undefined {
     const rgb = colorToRgb(color, index, useIndex);
 
-    return rgb !== undefined ? rgbToHsl(rgb) : rgb;
+    return rgb !== undefined ? rgbToHsl(rgb) : undefined;
 }
 
 export function rgbToHsl(color: IRgb): IHsl {
