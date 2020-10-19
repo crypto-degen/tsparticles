@@ -1,6 +1,6 @@
 {
   "name": "tsparticles",
-  "version": "1.18.4",
+  "version": "1.18.5",
   "description": "Easily add particle animations to your website. Browser ready and with official React/Vue/Angular/jQuery/Preact components.",
   "homepage": "https://particles.matteobruni.it/",
   "scripts": {
@@ -68,7 +68,7 @@
   },
   "dependencies": {
     "tslib": "^2.0.3",
-    "tsparticles-slim": "^1.18.4",
+    "tsparticles-slim": "^1.18.5",
     "tsparticles-plugin-absorbers": "1.0.0",
     "tsparticles-plugin-emitters": "1.0.0",
     "tsparticles-plugin-polygon-mask": "1.0.0"
